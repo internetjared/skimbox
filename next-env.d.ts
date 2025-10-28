@@ -1,5 +1,5 @@
-# See https://nextjs.org/docs/advanced-features/static-html-export
-# for more information about static HTML export.
+/// <reference types="next" />
+/// <reference types="next/image-types/global" />
 
-# Disable static optimization for API routes
-export const dynamic = 'force-dynamic'
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/basic-features/typescript for more information.
