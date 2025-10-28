@@ -53,7 +53,7 @@ export async function pickForSend(userId: string, count: number): Promise<string
   })
   
   // Filter out hidden items
-  const availableBookmarks = pool.filter(bookmark => bookmark.sends.length === 0)
+  const availableBookmarks = pool.filter((bookmark: any) => bookmark.sends.length === 0)
   
   if (availableBookmarks.length === 0) {
     return []
