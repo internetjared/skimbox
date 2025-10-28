@@ -17,12 +17,19 @@ export async function GET(request: NextRequest) {
     const state = searchParams.get('state')
     const error = searchParams.get('error')
     
+    // Log each step
+    console.log('OAuth callback started')
+    console.log('Code received:', code ? 'yes' : 'no')
+    console.log('State valid:', state === 'skimbox-auth')
+    console.log('Error param:', error || 'none')
+    
     if (error) {
       console.error('OAuth error:', error)
       return NextResponse.redirect(new URL('/?error=oauth_denied', request.url))
     }
     
     if (!code || state !== 'skimbox-auth') {
+      console.error('Invalid callback params:', { code: !!code, state })
       return NextResponse.redirect(new URL('/?error=invalid_callback', request.url))
     }
     
@@ -30,23 +37,31 @@ export async function GET(request: NextRequest) {
     const cookieStore = cookies()
     const codeVerifier = cookieStore.get('code_verifier')?.value
     
+    console.log('Code verifier:', codeVerifier ? 'found' : 'missing')
+    
     if (!codeVerifier) {
       return NextResponse.redirect(new URL('/?error=missing_verifier', request.url))
     }
     
     // Exchange code for access token
+    console.log('Exchanging code for token...')
     const tokenResponse = await exchangeCodeForToken(code, codeVerifier)
+    console.log('Token exchange successful')
     
     // Get user info from X
+    console.log('Getting user info...')
     const userInfo = await getUserInfo(tokenResponse.access_token)
+    console.log('User info:', userInfo.id, userInfo.username)
     
     // Detect timezone from request headers
     const timezone = detectTimezone(request)
     
     // Encrypt access token
+    console.log('Encrypting token...')
     const encryptedToken = encrypt(tokenResponse.access_token)
     
     // Upsert user in database
+    console.log('Saving user to database...')
     await prisma.user.upsert({
       where: { xUserId: userInfo.id },
       update: {
@@ -63,13 +78,17 @@ export async function GET(request: NextRequest) {
       }
     })
     
+    console.log('User saved successfully')
+    
     // Clear the code verifier cookie
     cookieStore.delete('code_verifier')
     
     return NextResponse.redirect(new URL('/done', request.url))
   } catch (error) {
     console.error('OAuth callback error:', error)
-    return NextResponse.redirect(new URL('/?error=callback_failed', request.url))
+    // Log the full error details
+    console.error('Error details:', error instanceof Error ? error.message : error)
+    return NextResponse.redirect(new URL(`/?error=callback_failed&details=${encodeURIComponent(error instanceof Error ? error.message : String(error))}`, request.url))
   }
 }
 
