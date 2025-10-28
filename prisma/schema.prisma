@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String   @id @default(cuid())
+  email              String
+  tz                 String   @default("America/New_York")
+  sendCountDefault   Int      @default(5)
+  xUserId            String   @unique
+  xAccessToken       String   // Encrypted with AES-256-GCM
+  createdAt          DateTime @default(now())
+  active             Boolean  @default(true)
+  lastSnoozedAt      DateTime? // For snooze functionality
+
+  sends      Send[]
+  bookmarks  Bookmark[]
+
+  @@index([active])
+  @@index([lastSnoozedAt])
+}
+
+model Bookmark {
+  tweetId      String   @id
+  userId       String
+  authorId     String?
+  firstSeenAt  DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, firstSeenAt])
+  @@index([userId])
+  @@index([authorId])
+}
+
+model Send {
+  id        String   @id @default(cuid())
+  userId    String
+  tweetId   String
+  action    Action
+  sentAt    DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, sentAt])
+  @@index([userId, action])
+  @@index([action])
+}
+
+enum Action {
+  sent
+  pin
+  hide
+  open
+  snooze
+  pause
+  more
+}

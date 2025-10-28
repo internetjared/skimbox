@@ -1,0 +1,35 @@
+{
+  "name": "skimbox",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate",
+    "seed": "tsx scripts/seed.ts",
+    "test": "vitest",
+    "test:watch": "vitest --watch"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.7.1",
+    "next": "14.0.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "resend": "^2.1.0",
+    "crypto": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "prisma": "^5.7.1",
+    "tsx": "^4.6.2",
+    "typescript": "^5",
+    "vitest": "^1.1.0"
+  }
+}
