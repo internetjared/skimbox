@@ -15,7 +15,7 @@ export function getCurrentDateInTimezone(timezone: string): Date {
  * Checks if it's a new day for a user based on their timezone
  * Used to determine if we should send a daily email
  */
-export function isNewDayForUser(timezone: string, lastSendDate?: Date): boolean {
+export function isNewDayForUser(timezone: string, lastSendDate?: Date | null): boolean {
   const today = getCurrentDateInTimezone(timezone)
   const todayStr = today.toISOString().split('T')[0]
   
