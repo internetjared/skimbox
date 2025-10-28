@@ -198,7 +198,7 @@ export async function getUserInfo(accessToken: string): Promise<{
   name: string
   email?: string
 }> {
-  const response = await fetch('https://api.twitter.com/2/users/me?user.fields=email', {
+  const response = await fetch('https://api.twitter.com/2/users/me', {
     headers: {
       'Authorization': `Bearer ${accessToken}`,
       'Content-Type': 'application/json'
