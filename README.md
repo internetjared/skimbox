@@ -96,3 +96,5 @@ The cron job will run daily at 6 AM UTC.
 ## License
 
 MIT
+
+<!-- Updated for Vercel deployment fix -->
