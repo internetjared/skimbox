@@ -13,14 +13,20 @@ export async function GET(request: NextRequest) {
     const codeVerifier = generateCodeVerifier()
     const codeChallenge = await generateCodeChallenge(codeVerifier)
     
+    console.log('OAuth start - Generated code verifier:', codeVerifier.substring(0, 10) + '...')
+    console.log('OAuth start - Generated code challenge:', codeChallenge.substring(0, 10) + '...')
+    
     // Store code verifier in secure cookie
     const cookieStore = cookies()
     cookieStore.set('code_verifier', codeVerifier, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 600 // 10 minutes
+      maxAge: 600, // 10 minutes
+      path: '/'
     })
+    
+    console.log('OAuth start - Cookie set')
     
     // Build X OAuth URL
     const authUrl = new URL('https://twitter.com/i/oauth2/authorize')
@@ -31,6 +37,8 @@ export async function GET(request: NextRequest) {
     authUrl.searchParams.set('state', 'skimbox-auth')
     authUrl.searchParams.set('code_challenge', codeChallenge)
     authUrl.searchParams.set('code_challenge_method', 'S256')
+    
+    console.log('OAuth start - Redirecting to:', authUrl.toString())
     
     return NextResponse.redirect(authUrl.toString())
   } catch (error) {

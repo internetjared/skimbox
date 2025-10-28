@@ -38,6 +38,8 @@ export async function GET(request: NextRequest) {
     const codeVerifier = cookieStore.get('code_verifier')?.value
     
     console.log('Code verifier:', codeVerifier ? 'found' : 'missing')
+    console.log('Code verifier length:', codeVerifier?.length || 0)
+    console.log('All cookies:', cookieStore.getAll().map(c => c.name))
     
     if (!codeVerifier) {
       return NextResponse.redirect(new URL('/?error=missing_verifier', request.url))
