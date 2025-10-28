@@ -15,7 +15,7 @@ export async function upsertBookmarks(userId: string, bookmarks: XBookmark[]): P
   if (bookmarks.length === 0) return
   
   // Prepare upsert data
-  const upsertData = bookmarks.map(bookmark => ({
+  const upsertData = bookmarks.map((bookmark: XBookmark) => ({
     tweetId: bookmark.id,
     userId,
     authorId: bookmark.authorId
@@ -23,7 +23,7 @@ export async function upsertBookmarks(userId: string, bookmarks: XBookmark[]): P
   
   // Use transaction for atomic upsert
   await prisma.$transaction(
-    upsertData.map(data =>
+    upsertData.map((data: any) =>
       prisma.bookmark.upsert({
         where: { tweetId: data.tweetId },
         update: {}, // Don't update existing bookmarks
@@ -174,5 +174,5 @@ export async function getNeverSentBookmarks(userId: string): Promise<string[]> {
     }
   })
   
-  return bookmarks.map(b => b.tweetId)
+  return bookmarks.map((b: any) => b.tweetId)
 }

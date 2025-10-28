@@ -73,7 +73,7 @@ export async function pickForSend(userId: string, count: number): Promise<string
   // Sample with diversity rules
   const selected = sampleWithDiversity(candidates, count)
   
-  return selected.map(candidate => candidate.tweetId)
+  return selected.map((candidate: BookmarkCandidate) => candidate.tweetId)
 }
 
 /**
