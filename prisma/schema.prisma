@@ -34,7 +34,8 @@ model Bookmark {
   authorId     String?
   firstSeenAt  DateTime @default(now())
   
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sends Send[]
   
   @@index([userId, firstSeenAt])
   @@index([userId])
@@ -48,11 +49,13 @@ model Send {
   action    Action
   sentAt    DateTime @default(now())
   
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookmark Bookmark @relation(fields: [tweetId], references: [tweetId], onDelete: Cascade)
   
   @@index([userId, sentAt])
   @@index([userId, action])
   @@index([action])
+  @@index([tweetId])
 }
 
 enum Action {
