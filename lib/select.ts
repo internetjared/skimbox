@@ -60,7 +60,7 @@ export async function pickForSend(userId: string, count: number): Promise<string
   }
   
   // Score each bookmark
-  const candidates: BookmarkCandidate[] = availableBookmarks.map(bookmark => ({
+  const candidates: BookmarkCandidate[] = availableBookmarks.map((bookmark: any) => ({
     tweetId: bookmark.tweetId,
     authorId: bookmark.authorId,
     firstSeenAt: bookmark.firstSeenAt,
