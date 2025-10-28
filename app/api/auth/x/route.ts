@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * Starts OAuth 2.0 PKCE flow with X
  * Generates code verifier and challenge, redirects to X

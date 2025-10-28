@@ -7,6 +7,8 @@ import { composeEmail } from '@/lib/email'
 import { sendEmail } from '@/lib/mailer'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * Magic action endpoint for handling email actions
  * Verifies HMAC signatures and processes pin, hide, pause, snooze, more, open actions

@@ -4,6 +4,8 @@ import { exchangeCodeForToken, getUserInfo } from '@/lib/x'
 import { encrypt } from '@/lib/crypto'
 import { prisma } from '@/lib/prisma'
 
+export const dynamic = 'force-dynamic'
+
 /**
  * Completes OAuth 2.0 PKCE flow with X
  * Exchanges code for token, creates/updates user, redirects to done page
